@@ -1,26 +1,39 @@
-import Commands.Command;
-
-//import Commands.delete.DeleteMessage;
-//import Commands.get.GetMessage;
-//import Commands.get.GetMessages;
-//import Commands.patch.UpdateMessage;
-//import Commands.post.CreateMessage;
-import com.rabbitmq.client.*;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeoutException;
 
-public class CheckInService {
-	private static final String RPC_QUEUE_NAME = "restaurants-request";
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Consumer;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+
+import Commands.Command;
+import Commands.CreateCheckIn;
+import Commands.GetCheckIn;
+
+public class CheckinService {
+	private static final String RPC_QUEUE_NAME = "checkin-request";
+	public static  MongoDatabase database;
 	public static void main(String[] argv) {
 
+		MongoClientURI uri = new MongoClientURI(
+				"mongodb://admin:admin@cluster0-shard-00-00-nvkqp.gcp.mongodb.net:27017,cluster0-shard-00-01-nvkqp.gcp.mongodb.net:27017,cluster0-shard-00-02-nvkqp.gcp.mongodb.net:27017/El-Menus?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true");
+
+		MongoClient mongoClient = new MongoClient(uri);
+		database = mongoClient.getDatabase("El-Menus");
 		// initialize thread pool of fixed size
 		final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
 
@@ -50,13 +63,18 @@ public class CheckInService {
 						JSONObject messageBody = (JSONObject) parser.parse(message);
 						String command = (String) messageBody.get("command");
 						Command cmd = null;
-						System.out.println(command);
-						switch (command) {
-						case "CreateRestaurants":
-							
-							break;
-						case "RetrieveRestaurants":
 						
+//						String paramsUri = messageBody.get("uri").toString().substring(1); // gets route/params
+//						String[] params = paramsUri.split("/");
+						
+						System.out.println("CMD :  " + command);
+						
+						switch (command) {
+						case "CreateCheckin":
+							cmd = new CreateCheckIn();
+							break;
+						case "RetrieveCheckin":
+								cmd = new GetCheckIn();
 							break;
 //                            case "UpdateMessages":   cmd = new UpdateMessage();
 //                                break;
@@ -97,5 +115,8 @@ public class CheckInService {
 		JSONObject messageJson = (JSONObject) parser.parse(message);
 		String result = messageJson.get("command").toString();
 		return result;
+	}
+	public static MongoDatabase getDb() {
+		return database;
 	}
 }
