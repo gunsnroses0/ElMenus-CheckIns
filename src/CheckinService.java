@@ -30,7 +30,7 @@ public class CheckinService {
 	public static void main(String[] argv) {
 
 		MongoClientURI uri = new MongoClientURI(
-				"mongodb://admin:admin@cluster0-shard-00-00-nvkqp.gcp.mongodb.net:27017,cluster0-shard-00-01-nvkqp.gcp.mongodb.net:27017,cluster0-shard-00-02-nvkqp.gcp.mongodb.net:27017/El-Menus?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true");
+				"mongodb://localhost");
 
 		MongoClient mongoClient = new MongoClient(uri);
 		database = mongoClient.getDatabase("El-Menus");
