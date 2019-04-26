@@ -31,6 +31,7 @@ public class CheckIn {
 
 	private static MongoCollection<Document> collection = null;
 	private static int DbPoolCount = 4;
+	static String host = System.getenv("MONGO_URI");
 	public static int getDbPoolCount() {
 		return DbPoolCount;
 	}
@@ -39,10 +40,10 @@ public class CheckIn {
 	}
 
 	public static HashMap<String, Object> create(HashMap<String, Object> atrributes) throws ParseException {
-
+		MongoClientOptions.Builder options = MongoClientOptions.builder()
+	            .connectionsPerHost(DbPoolCount);
 		MongoClientURI uri = new MongoClientURI(
-				"mongodb://localhost");
-
+				host,options);
 		MongoClient mongoClient = new MongoClient(uri);
 		MongoDatabase database = mongoClient.getDatabase("El-Menus");
 //    	Method method =   Class.forName("PlatesService").getMethod("getDB", null);
@@ -64,9 +65,10 @@ public class CheckIn {
 
 	public static HashMap<String, Object> get(String messageId) {
 
+		MongoClientOptions.Builder options = MongoClientOptions.builder()
+	            .connectionsPerHost(DbPoolCount);
 		MongoClientURI uri = new MongoClientURI(
-				"mongodb://localhost");
-
+				host,options);
 		MongoClient mongoClient = new MongoClient(uri);
 		MongoDatabase database = mongoClient.getDatabase("El-Menus");
 //    	Method method =   Class.forName("PlatesService").getMethod("getDB", null);
