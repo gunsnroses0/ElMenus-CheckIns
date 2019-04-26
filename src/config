@@ -1,4 +1,4 @@
-POST,/checkin,CreateCheckIn
+POST,/checkin/,CreateCheckIn
 GET,/checkin/id,GetCheckIn
 POST,/checkin/addCommand/,AddCommand
 POST,/checkin/updateCommand/,UpdateCommand
