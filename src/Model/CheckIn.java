@@ -38,7 +38,7 @@ public class CheckIn {
 		DbPoolCount = dbPoolCount;
 	}
 
-	public static HashMap<String, Object> create(HashMap<String, Object> atrributes) {
+	public static HashMap<String, Object> create(HashMap<String, Object> atrributes) throws ParseException {
 
 		MongoClientURI uri = new MongoClientURI(
 				"mongodb://localhost");
@@ -57,7 +57,9 @@ public class CheckIn {
 		}
 		collection.insertOne(newCheckin);
 
-		return atrributes;
+		JSONParser parser = new JSONParser();
+		HashMap<String, Object> returnValue = Command.jsonToMap((JSONObject) parser.parse(newCheckin.toJson()));
+		return returnValue;
 	}
 
 	public static HashMap<String, Object> get(String messageId) {
