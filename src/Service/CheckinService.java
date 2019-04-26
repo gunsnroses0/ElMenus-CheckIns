@@ -1,3 +1,7 @@
+package Service;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,9 +29,29 @@ import Commands.CreateCheckIn;
 import Commands.GetCheckIn;
 
 public class CheckinService {
-	private static final String RPC_QUEUE_NAME = "checkin-request";
+	private static String RPC_QUEUE_NAME = "checkin-request";
+	public static String getRPC_QUEUE_NAME() {
+		return RPC_QUEUE_NAME;
+	}
+
+	public static void setRPC_QUEUE_NAME(String rPC_QUEUE_NAME) {
+		System.out.println("RENAMING");
+		RPC_QUEUE_NAME = rPC_QUEUE_NAME;
+	}
 	public static  MongoDatabase database;
+	public static HashMap<String, String> config;
 	public static void main(String[] argv) {
+		run();
+	}
+	private static int threadPoolCount=4;
+	public static int getThreadPoolCount() {
+		return threadPoolCount;
+	}
+
+	public static void setThreadPoolCount(int threadPoolCount) {
+		CheckinService.threadPoolCount = threadPoolCount;
+	}
+	public static void run() {
 
 		MongoClientURI uri = new MongoClientURI(
 				"mongodb://localhost");
@@ -118,5 +142,22 @@ public class CheckinService {
 	}
 	public static MongoDatabase getDb() {
 		return database;
+	}
+	public static void updateHashMap() throws IOException {
+		config = new HashMap<String, String>();
+		System.out.println("X");
+		File file = new File("src/config");
+		BufferedReader br = new BufferedReader(new FileReader(file));
+
+		String st;
+
+		while ((st = br.readLine()) != null) {
+			System.out.println(st);
+			String[] array = st.split(",");
+			config.put(array[0] + array[1], array[2]);
+		}
+		System.out.println(config);
+		br.close();
+
 	}
 }

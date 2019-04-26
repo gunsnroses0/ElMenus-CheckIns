@@ -1,0 +1,10 @@
+POST,/checkin,CreateCheckIn
+GET,/checkin/id,GetCheckIn
+POST,/checkin/addCommand/,AddCommand
+POST,/checkin/updateCommand/,UpdateCommand
+POST,/checkin/deleteCommand/,DeleteCommand
+POST,/checkin/updateThreadPoolCount/,UpdateThreadPoolCount
+POST,/checkin/updateDBPoolCount/,UpdateDBPoolCount
+GET,/checkin/freeze/,FreezeQueue
+GET,/checkin/resume/,ResumeQueue
+POST,/checkin,Test
