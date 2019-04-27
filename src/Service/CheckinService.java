@@ -44,6 +44,7 @@ public class CheckinService {
 	public static HashMap<String, String> config;
 	public static void main(String[] argv) {
 		run();
+		ServiceController.run();
 	}
 	private static int threadPoolCount=4;
 	public static int getThreadPoolCount() {
