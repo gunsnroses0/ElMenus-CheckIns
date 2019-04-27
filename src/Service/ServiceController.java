@@ -32,7 +32,7 @@ public abstract class ServiceController {
 	public static  MongoDatabase database;
 	public static HashMap<String, String> config;
 	
-	public static void main(String[] argv) {
+	public static void run() {
 		try {
 			updateHashMap();
 		} catch (IOException e1) {
