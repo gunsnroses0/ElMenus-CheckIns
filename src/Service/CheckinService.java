@@ -29,6 +29,7 @@ import com.rabbitmq.client.Envelope;
 import Commands.Command;
 import Commands.CreateCheckIn;
 import Commands.GetCheckIn;
+import Model.CheckIn;
 
 public class CheckinService {
 	private static String RPC_QUEUE_NAME = "checkin-request";
@@ -45,6 +46,7 @@ public class CheckinService {
 	public static void main(String[] argv) {
 		run();
 		ServiceController.run();
+		CheckIn.initializeDb();
 	}
 	private static int threadPoolCount=4;
 	public static int getThreadPoolCount() {
